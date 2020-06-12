@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import ExampleComponent from "./components/ExampleComponent";
+import Home from "./components/Home";
+import UsersIndex from "./components/UsersIndex";
 
 Vue.use(VueRouter);
 
 export default new VueRouter({
     routes: [
-        { path: '/', component: ExampleComponent },
+        { path: '/', name:'home', component: Home },
+        { path: '/users', name:'users.index', component: UsersIndex },
     ],
     mode: 'history',
 });
