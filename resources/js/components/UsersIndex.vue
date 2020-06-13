@@ -1,7 +1,12 @@
 <template>
      <div class="users">
+
         <div v-if="error" class="error">
             <p>{{ error }}</p>
+        </div>
+
+        <div class="my-2 py-2">
+            <router-link :to="{ name: 'users.create' }" class="px-2 py-4 my-2 bg-green-500 rounded text-white font-semibold">Add User</router-link>
         </div>
 
         <ul v-if="users">
@@ -13,6 +18,9 @@
                     <p><span class="font-bold">Name :</span> {{ name }} </p>
                     <p><span class="font-bold">Email :</span> {{ email }}</p>
                 </div>
+                <div class="w-12 h-auto ml-2 bg-teal-500 rounded flex items-center justify-center hover:bg-teal-600 cursor-pointer">
+                    <router-link :to="{ name: 'users.edit', params: { id } }">Edit</router-link>
+                </div>
             </li>
         </ul>
 
@@ -21,6 +29,7 @@
             <span class="text-teal-500">{{ paginatonCount }}</span>
             <button :disabled="! nextPage" @click.prevent="goToNext" class="bg-teal-500 px-2 py-1 text-white rounded ml-4">Next</button>
         </div>
+
     </div>
 </template>
 
@@ -29,18 +38,16 @@
 
     const getUsers = (page, callback) => {
         const params = { page };
-
         axios
             .get('/api/users', { params })
             .then(response => {
                 callback(null, response.data);
+                console.log('---------------------');
+                console.log(response.data);
             }).catch(error => {
                 callback(error, error.response.data);
             });
     };
-
-    console.log('##################################');
-    console.log(getUsers);
 
     export default {
         name: "UsersIndex",
@@ -81,13 +88,13 @@
                 return `${current_page} of ${last_page}`;
             },
         },
-         beforeRouteEnter (to, from, next) {
+        beforeRouteEnter (to, from, next) {
             getUsers(to.query.page, (err, data) => {
+                console.log('***************************');
+                console.log(data);
                 next(vm => vm.setData(err, data));
             });
         },
-        // when route changes and this component is already rendered,
-        // the logic will be slightly different.
         beforeRouteUpdate (to, from, next) {
             this.users = this.links = this.meta = null
             getUsers(to.query.page, (err, data) => {

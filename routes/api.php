@@ -17,5 +17,9 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->group(function (){
 
     Route::get('/users', 'Api\UsersController@index');
+    Route::post('/users', 'Api\UsersController@store');
+    Route::get('/users/{user}', 'Api\UsersController@show');
+    Route::put('/users/{user}', 'Api\UsersController@update');
+    Route::delete('/users/{user}', 'Api\UsersController@destroy');
 
 // });
